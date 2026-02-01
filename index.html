@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Asin! 💖</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(135deg, #ffe6f0, #ffb3d9);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    position: relative;
+  }
+
+  /* Landing content */
+  #landingContent {
+    text-align: center;
+    color: #6a0dad; /* darker purple for visibility */
+    max-width: 80%;
+  }
+
+  #landingTitle {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 15px #ff3399, 0 0 20px #ff66cc;
+    cursor: pointer;
+  }
+
+  #landingNote {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+  }
+
+  #startBtn {
+    padding: 15px 40px;
+    font-size: 1.3rem;
+    background-color: #ff66cc;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff3399;
+    animation: glow 1.5s infinite alternate;
+  }
+
+  @keyframes glow {
+    0% { box-shadow: 0 0 20px #ff3399; transform: scale(1); }
+    100% { box-shadow: 0 0 40px #ff66cc; transform: scale(1.05); }
+  }
+
+  /* Gallery hidden initially */
+  .gallery {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 30px;
+    z-index: 2;
+  }
+
+  .gallery img {
+    width: 200px;
+    height: 200px;
+    border-radius: 25px;
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(255, 102, 204, 0.7);
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .gallery img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 35px rgba(255, 102, 204, 1);
+  }
+
+  /* Align 3rd and 6th images properly */
+  .gallery img:nth-child(3),
+  .gallery img:nth-child(6) {
+    object-position: center top;
+  }
+
+  .wish-btn {
+    display: none;
+    padding: 15px 40px;
+    font-size: 1.3rem;
+    background-color: #ff66cc;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff3399;
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  .message {
+    display: none;
+    margin-top: 30px;
+    font-size: 1.5rem;
+    color: #6a0dad;
+    text-align: center;
+    max-width: 80%;
+  }
+
+  /* Confetti particles */
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #ff66cc;
+    opacity: 0.8;
+    top: -10px;
+    animation: confettiFall linear infinite;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+  }
+
+  /* Floating balloons and hearts */
+  .balloon, .heart {
+    position: absolute;
+    width: 50px;
+    height: 70px;
+    opacity: 0.8;
+    animation: floatUp linear infinite;
+    z-index: 1;
+  }
+
+  .balloon { border-radius: 50%; }
+
+  .heart {
+    width: 40px;
+    height: 40px;
+    background-color: #ff99cc;
+    transform: rotate(-45deg);
+  }
+
+  .heart::before, .heart::after {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #ff99cc;
+    border-radius: 50%;
+  }
+
+  .heart::before { top: -20px; left: 0; }
+  .heart::after { left: 20px; top: 0; }
+
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg); }
+    100% { transform: translateY(-150px) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Landing page content -->
+<div id="landingContent">
+  <h1 id="landingTitle"></h1>
+  <p id="landingNote"></p>
+  <button id="startBtn">Let's Celebrate 🎁</button>
+</div>
+
+<!-- Gallery -->
+<div class="gallery" id="gallery">
+  <img src="birth1.jpeg" alt="Memory 1">
+  <img src="b2.jpeg" alt="Memory 2">
+  <img src="b3.jpeg" alt="Memory 3">
+  <img src="b4.jpeg" alt="Memory 4">
+  <img src="b5.jpeg" alt="Memory 5">
+  <img src="b6.jpeg" alt="Memory 6">
+</div>
+
+<!-- Wish button -->
+<button class="wish-btn" id="wishBtn" onclick="showMessage()">Click for Birthday Wish 🎁</button>
+
+<!-- Birthday message -->
+<div class="message" id="birthdayMessage"></div>
+
+<!-- Background Music -->
+<audio autoplay loop>
+  <source src="happy-birthday-music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  // Sequential typing function
+  function typeTextSequential(element, text, speed = 50) {
+    return new Promise((resolve) => {
+      let i = 0;
+      function typing() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(typing, speed);
+        } else {
+          resolve();
+        }
+      }
+      typing();
+    });
+  }
+
+  // Landing texts
+  const titleText = "🎉 Happy Birthday Asin! 💖";
+  const noteText = "Hey Asin! Today’s all about you 🥳✨. Get ready for some amazing memories, photos, and surprises!";
+
+  const landingTitle = document.getElementById('landingTitle');
+  const landingNote = document.getElementById('landingNote');
+  const birthdayMessage = document.getElementById('birthdayMessage');
+
+  async function typeLandingTexts() {
+    await typeTextSequential(landingTitle, titleText, 100);
+    await typeTextSequential(landingNote, noteText, 40);
+  }
+
+  typeLandingTexts();
+
+  // Birthday message
+  const messageText = `🎂 My dear Asin! First of all I love you so much. Idk what to say I'm blessed to have you in my life now and ever. It's all started from 2021 with all of our laughter, funs, many sad and happy days... I'm missing those days where we used to get scolded by our Maths Sir, where we used to eat, where we used to read, where we used to wait for our parents on Sundays and our random misunderstandings... I never ever thought that we would continue this friendship after our school but these days we're living now is so blessed when I think I got you even though we are miles away apart... I also want to surprise you as you did for my last birthday but you know the situations... But I'm sure I never die without giving you lots of surprises for upcoming years... I know you love me more than I love you and I want the love till my last life. Be happy always! Enjoy your day! Love you so much! 💖✨`;
+
+  function showMessage() {
+    birthdayMessage.style.display = 'block';
+    typeTextSequential(birthdayMessage, messageText, 30);
+  }
+
+  // Floating balloons and hearts
+  const colors = ['#ff99cc', '#ff66cc', '#ff3399', '#ffb3d9'];
+  for(let i = 0; i < 15; i++) {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+    balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    balloon.style.left = Math.random() * 100 + 'vw';
+    balloon.style.animationDuration = 5 + Math.random() * 5 + 's';
+    document.body.appendChild(balloon);
+  }
+
+  for(let i = 0; i < 10; i++) {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = 6 + Math.random() * 5 + 's';
+    document.body.appendChild(heart);
+  }
+
+  // Confetti particles
+  for(let i=0;i<30;i++){
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+    confetti.style.left = Math.random()*100+'vw';
+    confetti.style.animationDuration = 3 + Math.random()*3+'s';
+    document.body.appendChild(confetti);
+  }
+
+  const startBtn = document.getElementById('startBtn');
+  const landingContent = document.getElementById('landingContent');
+  const gallery = document.getElementById('gallery');
+  const wishBtn = document.getElementById('wishBtn');
+  const galleryImages = gallery.getElementsByTagName('img');
+
+  startBtn.addEventListener('click', () => {
+    landingContent.style.display = 'none';
+    gallery.style.display = 'flex';
+    wishBtn.style.display = 'inline-block';
+
+    // Fade in images one by one
+    for(let i=0; i<galleryImages.length; i++){
+      setTimeout(() => {
+        galleryImages[i].style.opacity = '1';
+        galleryImages[i].style.transform = 'translateY(0)';
+      }, i*300);
+    }
+
+    // Fade in button
+    setTimeout(() => { wishBtn.style.opacity = '1'; }, galleryImages.length*300);
+  });
+
+</script>
+
+</body>
+</html>
